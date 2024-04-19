@@ -1,0 +1,4 @@
+#all the noe modules
+/node_modules
+#all the dist directory
+/dist
