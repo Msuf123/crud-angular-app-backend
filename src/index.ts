@@ -3,6 +3,21 @@ import cors from 'cors'
 const app:Express=express()
 let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
 app.use(cors({origin:'*'}))
+//mY net was not workig so i made body parser from scratch
+app.use((req,res,next)=>{
+    let datareq:Buffer
+    req.on('data',(data)=>{
+        console.log(Buffer.isBuffer(data))
+        datareq=data
+    })
+    req.on('end',()=>{
+        req.body=JSON.parse(datareq.toString())
+        next()
+    })
+    
+    
+    console.log(req.header,req.headers)
+})
 app.get('/',(req:Request,res:Response,next:NextFunction)=>{
     res.send('i am up and running can perform further operations')
 })
