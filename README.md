@@ -1,5 +1,5 @@
 This is my first typescript server.
-It is amazing experience :) 
+It has been a  amazing experience devloping with typescript :) 
 To run the server do the following
 1) npm install
 2) npm start
