@@ -10,21 +10,23 @@ app.get('/',(req:Request,res:Response,next:NextFunction)=>{
 })
 app.post('/friends/add',(req:Request,res:Response,next:NextFunction)=>{
     friends.push(req.body)
+    console.log('Incomming')
     res.send(friends)
 })
-app.put('/friends/update',(req:Request,res:Response,next:NextFunction)=>{
+app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
     const name:string=req.body.name
     const place:string=req.body.place
     const shortListed=friends.filter((item)=>item.name===name)
     const othes=friends.filter((item)=>item.name!==name)
     shortListed[0].place=place
-    const finalArray=[...shortListed,...othes]
+    const finalArray=[...othes,...shortListed]
     friends=finalArray
     console.log(friends)
     res.send(friends)
 })
 app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
-    const name=req.body.name
+    const name=req.query.name
+    console.log(name)
     friends=friends.filter((item)=>item.name!==name)
     res.send(friends)
 })
