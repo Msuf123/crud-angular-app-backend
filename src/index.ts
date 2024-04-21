@@ -5,6 +5,11 @@ const app:Express=express()
 let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
 app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
+app.use((req:Request,res:Response,next:NextFunction)=>{
+    console.log(req.header)
+    console.log(req.query)
+    next()
+})
 app.get('/',(req:Request,res:Response,next:NextFunction)=>{
     res.send('i am up and running can perform further operations')
 })
@@ -26,7 +31,6 @@ app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
 })
 app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
     const name=req.query.name
-    console.log(name)
     friends=friends.filter((item)=>item.name!==name)
     res.send(friends)
 })
