@@ -7,7 +7,6 @@ app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
 app.use((req:Request,res:Response,next:NextFunction)=>{
     console.log(req.header)
-    console.log(req.query)
     next()
 })
 app.get('/',(req:Request,res:Response,next:NextFunction)=>{
