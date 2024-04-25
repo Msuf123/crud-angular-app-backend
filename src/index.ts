@@ -6,11 +6,16 @@ let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
 app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
 app.use((req:Request,res:Response,next:NextFunction)=>{
-    console.log(req.header)
-    next()
+    console.log(req.headers)
+    let a:any=req.headers
+    console.log(a.authorization)
+    if(a.authorization==='jj'){
+        next()
+    }
+    res.status(403).send('oops wrong token')
 })
 app.get('/',(req:Request,res:Response,next:NextFunction)=>{
-    res.send('i am up and running can perform further operations')
+    res.send('auth')
 })
 app.post('/friends/add',(req:Request,res:Response,next:NextFunction)=>{
     friends.push(req.body)
@@ -34,8 +39,11 @@ app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
     res.send(friends)
 })
 app.get('/friends',(req:Request,res:Response,next:NextFunction)=>{
-    console.log('Incomming request',req.headers)
     res.send(friends)
+})
+app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
+ console.log('Sending the 403')
+ res.status(403).send('Youe are not atuh')
 })
 
 app.listen(3003,()=>{console.log('Server up and running at http://localhost:3003')})
