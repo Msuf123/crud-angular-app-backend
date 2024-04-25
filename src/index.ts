@@ -1,19 +1,12 @@
 import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import jwt from 'jsonwebtoken'
+import {signUp} from './Routes/Sign-up'
 const app:Express=express()
 let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
 app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
-app.use((req:Request,res:Response,next:NextFunction)=>{
-    console.log(req.headers)
-    let a:any=req.headers
-    console.log(a.authorization)
-    if(a.authorization==='jj'){
-        next()
-    }
-    res.status(403).send('oops wrong token')
-})
 app.get('/',(req:Request,res:Response,next:NextFunction)=>{
     res.send('auth')
 })
@@ -22,6 +15,7 @@ app.post('/friends/add',(req:Request,res:Response,next:NextFunction)=>{
     console.log('Incomming')
     res.send(friends)
 })
+app.use('/sign-up',signUp)
 app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
     const name:string=req.body.name
     const place:string=req.body.place
@@ -46,4 +40,20 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
  res.status(403).send('Youe are not atuh')
 })
 
-app.listen(3003,()=>{console.log('Server up and running at http://localhost:3003')})
+app.listen(3003,()=>{
+    const pyaload={
+        iss:"http://localhost:3003",
+        sub:"akshatMalik",
+        aud:'http://localhost:4200',
+        
+    }
+    
+    const token=jwt.sign(pyaload,'signMe',{expiresIn:5})
+    setTimeout(()=>{
+        let a:any=jwt.verify(token,'signMe')
+        console.log(a.exp)
+
+},10000)
+    console.log('Server up and running at http://localhost:3003')
+
+})
