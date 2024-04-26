@@ -16,6 +16,7 @@ app.post('/friends/add',(req:Request,res:Response,next:NextFunction)=>{
     res.send(friends)
 })
 app.use('/sign-up',signUp)
+
 app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
     const name:string=req.body.name
     const place:string=req.body.place
@@ -41,19 +42,7 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
 })
 
 app.listen(3003,()=>{
-    const pyaload={
-        iss:"http://localhost:3003",
-        sub:"akshatMalik",
-        aud:'http://localhost:4200',
-        
-    }
-    
-    const token=jwt.sign(pyaload,'signMe',{expiresIn:5})
-    setTimeout(()=>{
-        let a:any=jwt.verify(token,'signMe')
-        console.log(a.exp)
-
-},10000)
+   
     console.log('Server up and running at http://localhost:3003')
 
 })
