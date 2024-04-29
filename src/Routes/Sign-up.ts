@@ -13,6 +13,7 @@ signUp.post('/verifyUserName',(req:Request,res:Response,next:NextFunction)=>{
       res.send('invalid')
    }
 })
+
 signUp.post('/user',(req:Request,res:Response,next:NextFunction)=>{
    const token=jwt.sign({username:'akshatmalik18t@gmailcom'},'shhhh')
    res.send(token)
