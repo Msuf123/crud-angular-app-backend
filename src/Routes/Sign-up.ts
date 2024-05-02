@@ -15,7 +15,7 @@ signUp.post('/verifyUserName',(req:Request,res:Response,next:NextFunction)=>{
 })
 
 signUp.post('/user',(req:Request,res:Response,next:NextFunction)=>{
-   const token=jwt.sign({username:'akshatmalik18t@gmailcom'},'shhhh')
-   res.send(token)
+  console.log(req.body)
+  res.send('ok created user')
 })
 export {signUp}

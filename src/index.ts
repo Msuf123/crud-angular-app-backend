@@ -2,6 +2,7 @@ import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken'
+import {con} from './Connections/con'
 import {signUp} from './Routes/Sign-up'
 import passport, { DoneCallback } from 'passport'
 import { JwtFromRequestFunction } from 'passport-jwt'
@@ -55,8 +56,14 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
 })
 
 app.listen(3003,()=>{
-    const jwttg=jwt.sign({name:'akshatmalik18t@gmail.com'},'s')
-    console.log(jwttg)
+    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log(res)
+        }
+    })
     console.log('Server up and running at http://localhost:3003')
 
 })
