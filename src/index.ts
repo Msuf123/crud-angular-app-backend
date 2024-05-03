@@ -2,8 +2,10 @@ import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken'
+import {decryptPassword, encryptPassword} from './EncryptingPassword/EncryptPassword'
 import {con} from './Connections/con'
 import {signUp} from './Routes/Sign-up'
+require('dotenv').config();
 import passport, { DoneCallback } from 'passport'
 import { JwtFromRequestFunction } from 'passport-jwt'
 var JwtStrategy = require('passport-jwt').Strategy,
@@ -55,7 +57,7 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
  res.status(403).send('Youe are not atuh')
 })
 
-app.listen(3003,()=>{
+app.listen(3003,async()=>{
     con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
         if(err){
             console.log(err)
@@ -64,6 +66,7 @@ app.listen(3003,()=>{
             console.log(res)
         }
     })
+
     console.log('Server up and running at http://localhost:3003')
 
 })
