@@ -2,7 +2,7 @@ import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken'
-import {decryptPassword, encryptPassword} from './EncryptingPassword/EncryptPassword'
+import {email} from './MailingService/Mailing'
 import {con} from './Connections/con'
 import {signUp} from './Routes/Sign-up'
 require('dotenv').config();
@@ -58,15 +58,14 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
 })
 
 app.listen(3003,async()=>{
-    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log(res)
-        }
-    })
-
-    console.log('Server up and running at http://localhost:3003')
-
+    // con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+    //     if(err){
+    //         console.log(err)
+    //     }
+    //     else{
+    //         console.log(res)
+    //     }
+    // })
+     console.log('Server up and running at http://localhost:3003')
+    email()
 })
