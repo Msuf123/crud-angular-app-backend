@@ -4,5 +4,5 @@
 /dist
 
 #for now only ignoring connections
-src/Connections/
+
 .env

@@ -2,7 +2,7 @@ import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import {genrateToken,verifyToken} from './TokenGeneration/Token'
-
+import {con} from './Connections/connection'
 
 import {signUp} from './Routes/Sign-up'
 require('dotenv').config();
@@ -58,15 +58,15 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
 })
 
 app.listen(3003,async()=>{
-    // con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
-    //     if(err){
-    //         console.log(err)
-    //     }
-    //     else{
-    //         console.log(res)
-    //     }
-    // })
-    
+    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log(res)
+        }
+    })
+    console.log(process.env.name)
      console.log('Server up and running at http://localhost:3003')
     
 })
