@@ -2,8 +2,8 @@ import express,{Express,Response,Request, NextFunction, request} from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import {genrateToken,verifyToken} from './TokenGeneration/Token'
-import {email} from './MailingService/Mailing'
-import {con} from './Connections/con'
+
+
 import {signUp} from './Routes/Sign-up'
 require('dotenv').config();
 import passport, { DoneCallback } from 'passport'
@@ -68,5 +68,5 @@ app.listen(3003,async()=>{
     // })
     
      console.log('Server up and running at http://localhost:3003')
-    email()
+    
 })
