@@ -56,7 +56,9 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
  console.log('Sending the 403')
  res.status(403).send('Youe are not atuh')
 })
-
+app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
+    res.send(err).status(400)
+})
 app.listen(3003,async()=>{
     con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
         if(err){
