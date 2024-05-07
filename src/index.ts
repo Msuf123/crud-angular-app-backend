@@ -3,17 +3,18 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import {genrateToken,verifyToken} from './TokenGeneration/Token'
 import {con} from './Connections/connection'
-
+import { encryptPassword } from './EncryptingPassword/EncryptPassword'
 import {signUp} from './Routes/Sign-up'
 require('dotenv').config();
 import passport, { DoneCallback } from 'passport'
 import { JwtFromRequestFunction } from 'passport-jwt'
+import { Next } from 'mysql2/typings/mysql/lib/parsers/typeCast'
 var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const app:Express=express()
 var opts:any = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 's';
+opts.secretOrKey ='shhh';
 let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
 app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
@@ -49,19 +50,19 @@ app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
     friends=friends.filter((item)=>item.name!==name)
     res.send(friends)
 })
+app.get('/friends/auth',(req,res,next)=>{console.log(req.rawHeaders);next()},passport.authenticate('jwt',{session:false}),(req:Request,res:Response,next:NextFunction)=>{
+    console.log(req.header)
+    res.send('auth')
+})
 app.get('/friends',passport.authenticate('jwt',{session:false}),(req:Request,res:Response,next:NextFunction)=>{
     res.send(friends)
-})
-app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
- console.log('Sending the 403')
- res.status(403).send('Youe are not atuh')
 })
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
     console.log('err')
     res.status(300).send(err)
 })
 app.listen(3003,async()=>{
-  
+   
    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
         if(err){
             console.log(err)

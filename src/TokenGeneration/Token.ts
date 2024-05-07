@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
+
 function genrateToken(payload:Payload){
-   return jwt.sign(payload,'shh')
+   return jwt.sign(payload,'shh',{expiresIn:'4s'})
 }
 interface Payload{
     iss:string,
@@ -8,7 +9,7 @@ interface Payload{
 }
 function verifyToken(token:string){
 try{
- return jwt.verify(token,'shh')}
+ return jwt.verify(token,'shhh')}
  catch{
  
     return undefined
