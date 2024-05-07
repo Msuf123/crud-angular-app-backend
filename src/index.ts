@@ -57,10 +57,12 @@ app.get('/friends/un',(req:Request,res:Response,next:NextFunction)=>{
  res.status(403).send('Youe are not atuh')
 })
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
-    res.send(err).status(400)
+    console.log('err')
+    res.status(300).send(err)
 })
 app.listen(3003,async()=>{
-    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+  
+   con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
         if(err){
             console.log(err)
         }
@@ -68,7 +70,7 @@ app.listen(3003,async()=>{
             console.log(res)
         }
     })
-    console.log(process.env.name)
+
      console.log('Server up and running at http://localhost:3003')
     
 })
