@@ -60,4 +60,10 @@ signUp.post('/verifyUserName',(req:Request,res:Response,next:NextFunction)=>{
       }
    })
 })
+signUp.post('/githubVerigyUrl',(req:Request,res:Response,next:NextFunction)=>{
+   
+})
+signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
+   
+})
 export {signUp}
