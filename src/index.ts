@@ -3,6 +3,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import {genrateToken,verifyToken} from './TokenGeneration/Token'
 import {con} from './Connections/connection'
+import axions from 'axios'
 import { encryptPassword } from './EncryptingPassword/EncryptPassword'
 import {signUp} from './Routes/Sign-up'
 import {factoryGenpass} from './RandomPassword/GenPass'
@@ -77,7 +78,6 @@ app.listen(3003,async()=>{
 //             console.log(res)
 //         }
 //     })
-
-     console.log('Server up and running at http://localhost:3003')
+   console.log('Server up and running at http://localhost:3003')
     
 })

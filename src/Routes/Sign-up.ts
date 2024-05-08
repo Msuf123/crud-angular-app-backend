@@ -1,5 +1,6 @@
 import  express, { NextFunction, request } from "express";
 import jwt from 'jsonwebtoken'
+import axions from 'axios'
 import {con} from '../Connections/connection'
 import {encryptPassword,decryptPassword}  from '../EncryptingPassword/EncryptPassword'
 import { Request,Response } from "express";
@@ -60,8 +61,14 @@ signUp.post('/verifyUserName',(req:Request,res:Response,next:NextFunction)=>{
       }
    })
 })
-signUp.post('/githubVerigyUrl',(req:Request,res:Response,next:NextFunction)=>{
+signUp.post('/githubVerigyUrl',async (req:Request,res:Response,next:NextFunction)=>{
+   const codeFromReq=req.body.code
+   console.log(codeFromReq)
+   let respose=await axions.post('https://github.com/login/oauth/access_token',{client_id:'Ov23ctlxK38f77XvveHD',client_secret:process.env.githubSecret,code:codeFromReq},{headers:{Accept:'application/json'}})
+   console.log(respose.data) 
    
+   axions.get('https://api.github.com/user/emails',{headers:{Authorization:'Bearer '+respose.data.access_token,Accept:'application/vnd.github+json'}}).then((a)=>console.log(a.data)).catch((a)=>console.log('opps'))
+ 
 })
 signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
    
