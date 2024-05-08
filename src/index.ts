@@ -5,6 +5,7 @@ import {genrateToken,verifyToken} from './TokenGeneration/Token'
 import {con} from './Connections/connection'
 import { encryptPassword } from './EncryptingPassword/EncryptPassword'
 import {signUp} from './Routes/Sign-up'
+import {factoryGenpass} from './RandomPassword/GenPass'
 require('dotenv').config();
 import passport, { DoneCallback } from 'passport'
 import { JwtFromRequestFunction } from 'passport-jwt'
@@ -62,15 +63,20 @@ app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
     res.status(300).send(err)
 })
 app.listen(3003,async()=>{
-   
-   con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
-        if(err){
-            console.log(err)
-        }
-        else{
-            console.log(res)
-        }
-    })
+       console.log(factoryGenpass())
+       console.log(factoryGenpass())
+       console.log(factoryGenpass())
+       console.log(factoryGenpass())
+       console.log(factoryGenpass())
+       console.log(factoryGenpass())
+//    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+//         if(err){
+//             console.log(err)
+//         }
+//         else{
+//             console.log(res)
+//         }
+//     })
 
      console.log('Server up and running at http://localhost:3003')
     
