@@ -1,6 +1,7 @@
 import  express, { NextFunction, request } from "express";
 import jwt from 'jsonwebtoken'
 import axions from 'axios'
+import {insertEmail} from '../InsertEmail/InsertEmail'
 import {con} from '../Connections/connection'
 import {encryptPassword,decryptPassword}  from '../EncryptingPassword/EncryptPassword'
 import { Request,Response } from "express";
@@ -68,15 +69,21 @@ signUp.post('/githubVerigyUrl',async (req:Request,res:Response,next:NextFunction
    console.log(respose.data) 
    
   let email_addresses=await axions.get('https://api.github.com/user/emails',{headers:{Authorization:'Bearer '+respose.data.access_token,Accept:'application/vnd.github+json'}}).then((a)=>a.data).catch((a)=>{console.log('Err');return []})
-let emailToInsert=null
+if(email_addresses.length===0){
+   next('No email sonthing went wrong')
+}
+else{
+  let emailToInsert=null
 console.log(email_addresses)
   for(let i=0;i<email_addresses.length;i++){
    if(email_addresses[i].visibility===null){
+      console.log(email_addresses[i])
       emailToInsert=email_addresses[i]
+      console.log(emailToInsert.email,email_addresses[i].email)
       break
    }
   }
-  console.log(emailToInsert)
+  insertEmail(emailToInsert.email,next,res)}
 })
 signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
    

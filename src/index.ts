@@ -70,14 +70,14 @@ app.listen(3003,async()=>{
        console.log(factoryGenpass())
        console.log(factoryGenpass())
        console.log(factoryGenpass())
-//    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
-//         if(err){
-//             console.log(err)
-//         }
-//         else{
-//             console.log(res)
-//         }
-//     })
+   con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            console.log(res)
+        }
+    })
    console.log('Server up and running at http://localhost:3003')
     
 })

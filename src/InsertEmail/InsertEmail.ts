@@ -2,7 +2,8 @@ import {factoryGenpass} from '../RandomPassword/GenPass'
 import {con} from '../Connections/connection'
 import {encryptPassword,decryptPassword} from '../EncryptingPassword/EncryptPassword'
 import {genrateToken} from '../TokenGeneration/Token'
-async function insertEmail(username,next,res){
+import { NextFunction,Response } from 'express'
+async function insertEmail(username:string,next:NextFunction,res:Response){
   let pasword=factoryGenpass()
   const encryptedpasswordOfUser= await encryptPassword(pasword)
   con.query('INSERT INTO users(id,password) VALUES (?,?);',[username,encryptedpasswordOfUser],async (err,result)=>{
@@ -16,3 +17,4 @@ async function insertEmail(username,next,res){
     }
  })
 }
+export {insertEmail}
