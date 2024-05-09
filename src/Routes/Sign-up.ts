@@ -83,6 +83,7 @@ console.log(email_addresses)
       break
    }
   }
+  //We need to check before inserritng
   insertEmail(emailToInsert.email,next,res)}
 })
 signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
