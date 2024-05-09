@@ -71,7 +71,7 @@ signUp.post('/githubVerigyUrl',async (req:Request,res:Response,next:NextFunction
 let emailToInsert=null
 console.log(email_addresses)
   for(let i=0;i<email_addresses.length;i++){
-   if(email_addresses[i].private===null){
+   if(email_addresses[i].visibility===null){
       emailToInsert=email_addresses[i]
       break
    }
