@@ -67,8 +67,16 @@ signUp.post('/githubVerigyUrl',async (req:Request,res:Response,next:NextFunction
    let respose=await axions.post('https://github.com/login/oauth/access_token',{client_id:'Ov23ctlxK38f77XvveHD',client_secret:process.env.githubSecret,code:codeFromReq},{headers:{Accept:'application/json'}})
    console.log(respose.data) 
    
-   axions.get('https://api.github.com/user/emails',{headers:{Authorization:'Bearer '+respose.data.access_token,Accept:'application/vnd.github+json'}}).then((a)=>console.log(a.data)).catch((a)=>console.log('opps'))
- 
+  let email_addresses=await axions.get('https://api.github.com/user/emails',{headers:{Authorization:'Bearer '+respose.data.access_token,Accept:'application/vnd.github+json'}}).then((a)=>a.data).catch((a)=>{console.log('Err');return []})
+let emailToInsert=null
+console.log(email_addresses)
+  for(let i=0;i<email_addresses.length;i++){
+   if(email_addresses[i].private===null){
+      emailToInsert=email_addresses[i]
+      break
+   }
+  }
+  console.log(emailToInsert)
 })
 signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
    
