@@ -89,9 +89,12 @@ console.log(email_addresses)
       next('Error while cheing the database for if user exists or not')
    }
    else{
-     let whatToSend= result.length!==0? genrateToken({iss:emailToInsert.email}) : insertEmail(emailToInsert.email,next,res)
-     console.log(whatToSend)
-     res.send(whatToSend)
+      let sendToken=()=>{
+         res.send(genrateToken({iss:emailToInsert.email}))
+      }
+     let whatToSend= result.length!==0? sendToken() : insertEmail(emailToInsert.email,next,res)
+     
+     
    }
   }
   )
@@ -103,6 +106,19 @@ signUp.post('/googleVerifyUrl',async(req:Request,res:Response,next:NextFunction)
    console.log(token)
    const data=await axions.get('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:`Bearer ${token}`}}).then((a)=>a.data)
    console.log(data)
-   res.send('okay')
+   con.query('SELECT * FROM users WHERE id=?;',[data.email],(err,result:any)=>{
+      if(err){
+         next('Error while checking the database for if user exists or not')
+      }
+      else{
+         let sendToken=()=>{
+            res.send(genrateToken({iss:data.email}))
+         }
+        let whatToSend= result.length!==0? sendToken() : insertEmail(data.email,next,res)
+        
+        
+      }
+     }
+     )
 })
 export {signUp}
