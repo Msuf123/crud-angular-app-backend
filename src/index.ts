@@ -75,7 +75,7 @@ app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
     let userId=decodedToken['iss']
     const name:string=req.body.name
     const place:string=req.body.place
-    con.query('UPDATE TABLE list SET place=? WHERE name=?;',[name,place],(err,rest)=>{
+    con.query('UPDATE  list SET place=? WHERE name=?;',[place,name],(err,rest)=>{
         if(err){
             next(err)
         }
@@ -96,7 +96,7 @@ app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
     let token=req.headers.authorization?.slice(7)
     let decodedToken:any=verifyToken(token)
     let userId=decodedToken['iss']
-    con.query('DELETE list WHERE name=?;',(err,ress)=>{
+    con.query('DELETE FROM list WHERE name=?;',[name],(err,ress)=>{
         if(err){
             next(err)
         }
