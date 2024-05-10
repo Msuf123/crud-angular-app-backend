@@ -73,7 +73,7 @@ if(email_addresses.length===0){
    next('No email sonthing went wrong')
 }
 else{
-  let emailToInsert=null
+  let emailToInsert:any=null
 console.log(email_addresses)
   for(let i=0;i<email_addresses.length;i++){
    if(email_addresses[i].visibility===null){
@@ -84,8 +84,20 @@ console.log(email_addresses)
    }
   }
   //We need to check before inserritng
-  insertEmail(emailToInsert.email,next,res)}
+  con.query('SELECT * FROM users WHERE id=?;',[emailToInsert.email],(err,result:any)=>{
+   if(err){
+      next('Error while cheing the database for if user exists or not')
+   }
+   else{
+     let whatToSend= result.length!==0? genrateToken({iss:emailToInsert.email}) : insertEmail(emailToInsert.email,next,res)
+     console.log(whatToSend)
+     res.send(whatToSend)
+   }
+  }
+  )
+}
 })
+
 signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
    
 })
