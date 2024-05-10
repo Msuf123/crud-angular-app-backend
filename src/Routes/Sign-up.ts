@@ -26,14 +26,14 @@ signUp.post('/',async (req:Request,res:Response,next:NextFunction)=>{
    })
 })
 signUp.post('/checkUserExists',(req:Request,res:Response,next:NextFunction)=>{
-   const username=req.body.username
-   console.log(username)
-   con.query('SELECT * FROM users WHERE id=?;',[username],(err,result:any)=>{
+   const username_client=req.body.username
+   
+   con.query('SELECT * FROM users WHERE id=?;',[username_client],(err,result:any)=>{
       if(err){
          next('Error at backend')
       }
       else{
-         console.log(result)
+         
          result.length===0?res.send('valid'):res.send('invalid')
       }
    })
@@ -103,7 +103,7 @@ console.log(email_addresses)
 
 signUp.post('/googleVerifyUrl',async(req:Request,res:Response,next:NextFunction)=>{
    let token=req.body.token
-   console.log(token)
+   
    const data=await axions.get('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:`Bearer ${token}`}}).then((a)=>a.data)
    console.log(data)
    con.query('SELECT * FROM users WHERE id=?;',[data.email],(err,result:any)=>{

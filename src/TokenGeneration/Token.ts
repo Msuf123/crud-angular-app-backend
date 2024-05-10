@@ -7,7 +7,7 @@ interface Payload{
     iss:string,
     
 }
-function verifyToken(token:string){
+function verifyToken(token:any){
 try{
  return jwt.verify(token,'shhh')}
  catch{

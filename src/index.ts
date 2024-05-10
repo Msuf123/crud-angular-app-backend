@@ -10,7 +10,7 @@ import {signUp} from './Routes/Sign-up'
 import cors from 'cors'
 import {factoryGenpass} from './RandomPassword/GenPass'
 require('dotenv').config();
-import passport, { DoneCallback } from 'passport'
+import passport, { DoneCallback, use } from 'passport'
 import { JwtFromRequestFunction } from 'passport-jwt'
 import { Next } from 'mysql2/typings/mysql/lib/parsers/typeCast'
 var JwtStrategy = require('passport-jwt').Strategy,
@@ -23,7 +23,12 @@ app.use(cors({
   
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey ='shhh';
-let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
+app.use((req,res,next)=>{
+    let token=req.headers.authorization?.slice(7)
+    let decodedToken:any=verifyToken(token)
+    console.log(decodedToken,'Token in request')
+    next()
+})
 app.use(cors({origin:'*'}))
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -38,36 +43,90 @@ app.get('/',(req:Request,res:Response,next:NextFunction)=>{
 app.use('/sign-up',signUp)
 
 app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
-    console.log('err')
-    res.status(300).send(err)
+    console.log(err)
+    res.status(300).send('Error on Server side')
 })
 app.use(passport.authenticate('jwt',{session:false}))
 app.post('/friends/add',(req:Request,res:Response,next:NextFunction)=>{
-    friends.push(req.body)
-    res.send(friends)
+    let token=req.headers.authorization?.slice(7)
+    let decodedToken:any=verifyToken(token)
+    let userId=decodedToken['iss']
+    let name=req.body.name
+    let place=req.body.place
+    con.query('INSERT INTO list(id,name,place) VALUES(?,?,?);',[userId,name,place],(err,result)=>{
+        if(err){
+            next(err)
+        }
+        else{
+            con.query('SELECT name,place FROM list WHERE id=?;',[userId],(err,result_sec)=>{
+                if(err){
+                    next(err)
+                }
+                else{
+                    res.send(result_sec)
+                }})
+        }
+    })
+   
 })
 app.put('/friends',(req:Request,res:Response,next:NextFunction)=>{
+    let token=req.headers.authorization?.slice(7)
+    let decodedToken:any=verifyToken(token)
+    let userId=decodedToken['iss']
     const name:string=req.body.name
     const place:string=req.body.place
-    const shortListed=friends.filter((item)=>item.name===name)
-    const othes=friends.filter((item)=>item.name!==name)
-    shortListed[0].place=place
-    const finalArray=[...othes,...shortListed]
-    friends=finalArray
-    console.log(friends)
-    res.send(friends)
+    con.query('UPDATE TABLE list SET place=? WHERE name=?;',[name,place],(err,rest)=>{
+        if(err){
+            next(err)
+        }
+        else{
+            con.query('SELECT name,place FROM list WHERE id=?;',[userId],(err,result_sec)=>{
+                if(err){
+                    next(err)
+                }
+                else{
+                    res.send(result_sec)
+                }})
+        }
+    })
+
 })
 app.delete('/friends',(req:Request,res:Response,next:NextFunction)=>{
     const name=req.query.name
-    friends=friends.filter((item)=>item.name!==name)
-    res.send(friends)
+    let token=req.headers.authorization?.slice(7)
+    let decodedToken:any=verifyToken(token)
+    let userId=decodedToken['iss']
+    con.query('DELETE list WHERE name=?;',(err,ress)=>{
+        if(err){
+            next(err)
+        }
+        else{
+            con.query('SELECT name,place FROM list WHERE id=?;',[userId],(err,result_sec)=>{
+                if(err){
+                    next(err)
+                }
+                else{
+                    res.send(result_sec)
+                }})
+        }
+    })
 })
 app.get('/friends/auth',(req:Request,res:Response,next:NextFunction)=>{
-    console.log(req.header)
+    
     res.send('auth')
 })
 app.get('/friends',(req:Request,res:Response,next:NextFunction)=>{
-    res.send(friends)
+    let token=req.headers.authorization?.slice(7)
+   let decodedToken:any=verifyToken(token)
+   let userId=decodedToken['iss']
+    con.query('SELECT name,place FROM list WHERE id=?;',[userId],(err,result)=>{
+        if(err){
+            next(err)
+        }
+        else{
+            res.send(result)
+        }
+    })
 })
 app.listen(3003,async()=>{
    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
