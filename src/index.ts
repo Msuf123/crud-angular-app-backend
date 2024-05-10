@@ -1,11 +1,13 @@
 import express,{Express,Response,Request, NextFunction, request} from 'express'
-import cors from 'cors'
+
 import bodyParser from 'body-parser'
 import {genrateToken,verifyToken} from './TokenGeneration/Token'
 import {con} from './Connections/connection'
 import axions from 'axios'
+let GitHubStrategy =require('passport-github2') 
 import { encryptPassword } from './EncryptingPassword/EncryptPassword'
 import {signUp} from './Routes/Sign-up'
+import cors from 'cors'
 import {factoryGenpass} from './RandomPassword/GenPass'
 require('dotenv').config();
 import passport, { DoneCallback } from 'passport'
@@ -15,6 +17,10 @@ var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const app:Express=express()
 var opts:any = {}
+app.use(cors({
+    origin: '*' // Replace with your frontend URL
+  }));
+  
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey ='shhh';
 let friends=[{name:'abhi',place:'up'},{name:'vardan',place:'up'}]
@@ -63,13 +69,22 @@ app.use((err:any,req:Request,res:Response,next:NextFunction)=>{
     console.log('err')
     res.status(300).send(err)
 })
+
+passport.use(new GitHubStrategy({
+    clientID: 'Ov23ctxuAjF1uhUO7vNv',
+    clientSecret: process.env.githubSecretTwo,
+    callbackURL: "http://localhost:3003/g/call",
+
+  },
+  function(accessToken:any, refreshToken:any, profile:any, done:any) {
+   
+console.log(profile)  
+done(null,profile.id)
+}
+  
+));
+
 app.listen(3003,async()=>{
-       console.log(factoryGenpass())
-       console.log(factoryGenpass())
-       console.log(factoryGenpass())
-       console.log(factoryGenpass())
-       console.log(factoryGenpass())
-       console.log(factoryGenpass())
    con.query('SELECT * FROM users LIMIT 1;',(err,res)=>{
         if(err){
             console.log(err)

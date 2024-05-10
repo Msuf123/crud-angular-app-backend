@@ -98,7 +98,11 @@ console.log(email_addresses)
 }
 })
 
-signUp.post('/googleVerifyUrl',(req:Request,res:Response,next:NextFunction)=>{
-   
+signUp.post('/googleVerifyUrl',async(req:Request,res:Response,next:NextFunction)=>{
+   let token=req.body.token
+   console.log(token)
+   const data=await axions.get('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:`Bearer ${token}`}}).then((a)=>a.data)
+   console.log(data)
+   res.send('okay')
 })
 export {signUp}
