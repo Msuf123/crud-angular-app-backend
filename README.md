@@ -8,3 +8,9 @@ LinkedIn- https://www.linkedin.com/in/akshat-malik-258805235/
  
  I am using a json web token based authentication to authentcate users
  will start using open id connect 
+ Create a .env file with the following values
+ databaseUsername=""
+databaseUserpassword=""
+secret='shhhh'
+githubSecret=''
+githubSecretTwo=''
