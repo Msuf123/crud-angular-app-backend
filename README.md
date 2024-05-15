@@ -14,3 +14,31 @@ databaseUserpassword=""
 secret='shhhh'
 githubSecret=''
 githubSecretTwo=''
+One everthing is setup the backedn databse name is friends 
+The friends have 2 tables 
++-------------------+
+| Tables_in_friends |
++-------------------+
+| list              |
+| users             |
++-------------------+
+And here is what each table looks like :
+MariaDB [friends]> DESCRIBE list;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | varchar(200) | NO   | PRI | NULL    |       |
+| name  | varchar(100) | NO   | PRI | NULL    |       |
+| place | varchar(100) | NO   | PRI | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+And the second one is 
+MariaDB [friends]> DESCRIBE users;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| id       | varchar(200) | NO   | PRI | NULL    |       |
+| password | text         | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+
+users have a foreign key to list table id column you can create that by using :-ALTER TABLE users ADD FOREIGN KEY (id) REFERENCES list(id);
