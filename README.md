@@ -24,6 +24,9 @@ The friends have 2 tables
 +-------------------+
 And here is what each table looks like :
 MariaDB [friends]> DESCRIBE list;
+
+
+
 +-------+--------------+------+-----+---------+-------+
 | Field | Type         | Null | Key | Default | Extra |
 +-------+--------------+------+-----+---------+-------+
