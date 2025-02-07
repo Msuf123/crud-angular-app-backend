@@ -20,3 +20,4 @@ The friends have 2 tables
 
 
 users have a foreign key to list table id column you can create that by using :-ALTER TABLE users ADD FOREIGN KEY (id) REFERENCES list(id);
+ 
