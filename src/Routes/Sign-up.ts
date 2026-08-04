@@ -16,11 +16,11 @@ signUp.post('/',async (req:Request,res:Response,next:NextFunction)=>{
    con.query('INSERT INTO users(id,password) VALUES (?,?);',[username,encryptedpasswordOfUser],(err,result)=>{
       if(err){
          const error=new Error(err.message)
-         console.log(error)
+         
          next(error)
       }
       else{
-         console.log('Response is set and user is created')
+      
          res.status(201).send('okay')
       }
    })
